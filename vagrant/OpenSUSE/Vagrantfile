@@ -6,7 +6,7 @@ zypper addrepo --no-gpgcheck https://download.opensuse.org/repositories/utilitie
 zypper addrepo --no-gpgcheck https://download.opensuse.org/repositories/devel:languages:nodejs/openSUSE_Leap_42.3/devel:languages:nodejs.repo
 zypper refresh
 zypper update -y
-zypper install -y llvm-clang git cmake
+zypper install -y llvm-clang git cmake gcc7-c++
 zypper install -y pcre-devel python3-devel swig
 zypper install -y openssl libopenssl-devel libssh-devel
 zypper install -y libffi-devel npm8 python3-pip python3-Flask
@@ -17,7 +17,7 @@ $libyang = <<SCRIPT
 rm -rf libyang
 git clone -b devel https://github.com/CESNET/libyang.git
 cd libyang; mkdir build; cd build
-cmake -DGEN_LANGUAGE_BINDINGS=ON .. && make && make install
+CC=gcc-7 CXX=g++-7 cmake -DGEN_LANGUAGE_BINDINGS=ON .. && make && make install
 cd ../..
 ldconfig
 SCRIPT
@@ -26,7 +26,7 @@ $libnetconf2 = <<SCRIPT
 rm -rf libnetconf2
 git clone -b devel https://github.com/CESNET/libnetconf2.git
 cd libnetconf2; mkdir build; cd build
-cmake -DENABLE_PYTHON=ON .. && make && make install
+CC=gcc-7 CXX=g++-7 cmake -DENABLE_PYTHON=ON .. && make && make install
 cd ../..
 ldconfig
 SCRIPT
@@ -34,7 +34,7 @@ SCRIPT
 $redblack = <<SCRIPT
 rm -rf libredblack
 git clone https://github.com/sysrepo/libredblack.git
-cd libredblack; ./configure && make && make install
+cd libredblack; CC=gcc-7 CXX=g++-7 ./configure && make && make install
 cd ..
 ldconfig
 SCRIPT
@@ -43,7 +43,7 @@ $sysrepo = <<SCRIPT
 rm -rf sysrepo
 git clone -b devel https://github.com/sysrepo/sysrepo.git
 cd sysrepo; mkdir build; cd build
-cmake -DGEN_LANGUAGE_BINDINGS=OFF .. && make && make install
+CC=gcc-7 CXX=g++-7 cmake -DGEN_LANGUAGE_BINDINGS=OFF .. && make && make install
 cd ../..
 ldconfig
 SCRIPT
@@ -52,9 +52,9 @@ $netopeer = <<SCRIPT
 rm -rf Netopeer2
 git clone -b devel-server https://github.com/CESNET/Netopeer2.git
 cd Netopeer2/keystored; mkdir build; cd build
-cmake .. && make && make install
+CC=gcc-7 CXX=g++-7 cmake .. && make && make install
 cd ../../server; mkdir build; cd build
-cmake .. && make && make install
+CC=gcc-7 CXX=g++-7 cmake .. && make && make install
 cd ../../..
 chown -R vagrant:vagrant ./sysrepo/build/repository
 SCRIPT
